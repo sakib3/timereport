@@ -6,6 +6,6 @@ const TimeReportSchema = new mongoose.Schema({
   hours: Number,
   start: Date,
   end: Date
-},{ collection: 'users' });
+}, { collection: 'users' });
 
 module.exports = mongoose.model('TimeReport', TimeReportSchema);

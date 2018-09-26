@@ -1,8 +1,8 @@
 
 const express = require('express');
 const app = express();
-const user = require('../controllers/userController');
+const controller = require('../controllers/userController');
 
-app.route('/username').get(user.getUsername);
+app.route('/users').get(controller.getUsers);
 
 module.exports = app;
