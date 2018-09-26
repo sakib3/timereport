@@ -2,51 +2,77 @@ import React, { Component } from 'react';
 import DateRangePicker from 'react-bootstrap-daterangepicker';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-daterangepicker/daterangepicker.css';
-//import './app.css';
 
 export default class App extends Component {
-  state = { username: null };
-
-  componentDidMount() {
-    fetch('/api/getUsername')
-      .then(res => res.json())
-      .then(user => this.setState({ username: user.username }));
+  constructor() {
+    super();
+    this.state = { users: null, user: null };
+  }
+ 
+  updateUsers(users) {
+    this.setState((prevState, props) => {
+      return { users: users , user: prevState.user}
+    });
   }
 
+  updateUser(user) {
+    this.setState((prevState, props) => {
+      return { users: prevState.users , user: user}
+    });
+  }
+
+  componentDidMount() {
+    fetch('/api/users')
+      .then(res => res.json())
+      .then(users => this.updateUsers(users));
+  }
+  handleChange(event) {
+    console.log(event.target.value);
+    this.updateUser(event.target.value);
+  }
   handleEvent(event, picker) {
+    let username = this.state.user;
     let data = {
       startDate: picker.startDate.format('YYYY-MM-DDT00:00:00Z'),
       endDate: picker.endDate.format('YYYY-MM-DDT00:00:00Z'),
-      userName: 'kamger'
+      userName: username
     }
-
-    fetch('/api/getTimeReport', {
-      method: 'POST',
-      mode: 'CORS',
-      body: JSON.stringify(data),
-      headers: {
-          'Content-Type': 'application/json'
-      }
-    })
-    .then(res => {
-        console.log(res);
-    })
-    .catch(err => err);
-
-
-
+    console.log(data);
+    fetch('/api/timereport')
+      .then(res => res.json())
+      .then(data => console.log(data));
+    // fetch('/api/timereport', {
+    //   method: 'POST',
+    //   mode: 'CORS',
+    //   body: JSON.stringify(data),
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //   }
+    // })
+    //   .then(res => {
+    //     console.log(res);
+    //   })
+    //   .catch(err => err);
 
   }
 
   render() {
-    const { username } = this.state;
-
+    const { users, user } = this.state;
     return (
       <div>
-        {username ? <h1>{`Hello ${username}`}</h1> : <h1>Loading.. please wait!</h1>}
-        <DateRangePicker onApply={this.handleEvent}>
-          <button>Select Date!</button>
-        </DateRangePicker>
+        {
+          users ?
+            <div>
+              <select onChange={(e) => this.handleChange(e)}>
+                {users.map((u) => <option value={u}>{u}</option>)}
+              </select>
+              <DateRangePicker onApply={ (e,p) => this.handleEvent(e,p)}>
+                <button>Select Date!</button>
+              </DateRangePicker>
+            </div>
+            :
+            <h1>Loading.. please wait!</h1>
+        }
       </div>
     );
   }
