@@ -8,16 +8,16 @@ export default class App extends Component {
     super();
     this.state = { users: null, user: null };
   }
- 
+
   updateUsers(users) {
     this.setState((prevState, props) => {
-      return { users: users , user: prevState.user}
+      return { users: users, user: prevState.user }
     });
   }
 
   updateUser(user) {
     this.setState((prevState, props) => {
-      return { users: prevState.users , user: user}
+      return { users: prevState.users, user: user }
     });
   }
 
@@ -37,22 +37,17 @@ export default class App extends Component {
       endDate: picker.endDate.format('YYYY-MM-DDT00:00:00Z'),
       userName: username
     }
-    console.log(data);
-    fetch('/api/timereport')
-      .then(res => res.json())
-      .then(data => console.log(data));
-    // fetch('/api/timereport', {
-    //   method: 'POST',
-    //   mode: 'CORS',
-    //   body: JSON.stringify(data),
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   }
-    // })
-    //   .then(res => {
-    //     console.log(res);
-    //   })
-    //   .catch(err => err);
+
+    fetch('/api/timereport', {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(res => res.json())
+    .then(data => console.log(data))
+    .catch(err => err);
 
   }
 
@@ -66,7 +61,7 @@ export default class App extends Component {
               <select onChange={(e) => this.handleChange(e)}>
                 {users.map((u) => <option value={u}>{u}</option>)}
               </select>
-              <DateRangePicker onApply={ (e,p) => this.handleEvent(e,p)}>
+              <DateRangePicker onApply={(e, p) => this.handleEvent(e, p)}>
                 <button>Select Date!</button>
               </DateRangePicker>
             </div>
