@@ -33,8 +33,8 @@ export default class App extends Component {
   handleEvent(event, picker) {
     let username = this.state.user;
     let data = {
-      startDate: picker.startDate.format('YYYY-MM-DDT00:00:00Z'),
-      endDate: picker.endDate.format('YYYY-MM-DDT00:00:00Z'),
+      startDate: picker.startDate.format('YYYY-MM-DD')+'T00:00:00Z',
+      endDate: picker.endDate.format('YYYY-MM-DD')+'T00:00:00Z',
       userName: username
     }
 
