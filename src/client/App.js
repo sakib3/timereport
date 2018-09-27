@@ -6,18 +6,24 @@ import 'bootstrap-daterangepicker/daterangepicker.css';
 export default class App extends Component {
   constructor() {
     super();
-    this.state = { users: null, user: null };
+    this.state = { users: null, user: null, data: null };
   }
 
   updateUsers(users) {
     this.setState((prevState, props) => {
-      return { users: users, user: prevState.user }
+      return { users: users, user: prevState.user, data: prevState.data }
     });
   }
 
   updateUser(user) {
     this.setState((prevState, props) => {
-      return { users: prevState.users, user: user }
+      return { users: prevState.users, user: user, data: prevState.data }
+    });
+  }
+
+  updateTable(data){
+    this.setState((prevState, props) => {
+      return { users: prevState.users, user: prevState.user, data: data }
     });
   }
 
@@ -46,25 +52,59 @@ export default class App extends Component {
       }
     })
     .then(res => res.json())
-    .then(data => console.log(data))
+    .then(data => this.updateTable(data))
     .catch(err => err);
 
   }
 
   render() {
-    const { users, user } = this.state;
+    const { users, user, data } = this.state;
     return (
-      <div>
+      <div style={{marginTop: 1 + 'rem'}}>
         {
           users ?
             <div>
-              <select onChange={(e) => this.handleChange(e)}>
-                {users.map((u) => <option value={u}>{u}</option>)}
-              </select>
-              <DateRangePicker onApply={(e, p) => this.handleEvent(e, p)}>
-                <button>Select Date!</button>
-              </DateRangePicker>
+              <div class="selection-group">
+                <select type="button" class="btn btn-light" style={{marginRight: .5 + 'rem'}} onChange={(e) => this.handleChange(e)}>
+                  <option value="" selected disabled hidden>Select User</option>
+                  {users.map((u) => <option value={u}>{u}</option>)}
+                </select>
+                <DateRangePicker onApply={(e, p) => this.handleEvent(e, p)}>
+                  <button type="button" class="btn btn-light">Select Date</button>
+                </DateRangePicker>
+              </div>
+
+              <div class="table-data">
+                {
+                  data && data.length >0 ?
+                  <table class="table table-borderless">
+                    <thead>
+                      <tr>
+                        <th>User Name</th>
+                        <th>Type Id</th>
+                        <th>Start</th>
+                        <th>Hours</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {data.map((row) => {
+                        return <tr>
+                                  <td>{row.user_name}</td>
+                                  <td>{row.type_id}</td>
+                                  <td>{row.start}</td>
+                                  <td>{row.hours}</td>
+                              </tr>;
+                      })}
+                      
+                    </tbody>
+                  </table>
+                  :
+                  <div></div>
+                }
+              </div>
+
             </div>
+
             :
             <h1>Loading.. please wait!</h1>
         }
