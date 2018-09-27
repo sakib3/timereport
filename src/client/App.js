@@ -60,25 +60,25 @@ export default class App extends Component {
   render() {
     const { users, user, data } = this.state;
     return (
-      <div style={{marginTop: 1 + 'rem'}}>
+      <div style={{marginTop: 1 +'rem'}}>
         {
           users ?
             <div>
               <div class="selection-group">
-                <select type="button" class="btn btn-light" style={{marginRight: .5 + 'rem'}} onChange={(e) => this.handleChange(e)}>
+                <select type="button" class="btn btn-secondary" style={{marginRight: .5 + 'rem'}} onChange={(e) => this.handleChange(e)}>
                   <option value="" selected disabled hidden>Select User</option>
                   {users.map((u) => <option value={u}>{u}</option>)}
                 </select>
                 <DateRangePicker onApply={(e, p) => this.handleEvent(e, p)}>
-                  <button type="button" class="btn btn-light">Select Date</button>
+                  <button type="button" class="btn btn-secondary">Select Date</button>
                 </DateRangePicker>
               </div>
 
-              <div class="table-data">
+              <div class="table-data" style={{marginTop: 1+'rem'}}>
                 {
                   data && data.length >0 ?
-                  <table class="table table-borderless">
-                    <thead>
+                  <table class="table">
+                    <thead class="thead-light">
                       <tr>
                         <th>User Name</th>
                         <th>Type Id</th>
