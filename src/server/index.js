@@ -2,8 +2,10 @@ const express = require('express');
 const app = express();
 const config = require('./config');
 const router = require('./router');
+const bodyParser = require('body-parser');
 
-
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use(express.static('dist'));
 app.use('/api',router.api);
 

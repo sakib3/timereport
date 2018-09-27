@@ -10,7 +10,12 @@ exports.getTimeReportForAll =
 
 exports.getTimeReportForUser =
   function (req, res) {
-    model.find({ user_name: 'kamger' }, function (err, data) {
+    var query = {
+      user_name: req.body.userName,
+      start: { "$gte": req.body.startDate },
+      end: { "$lt": req.body.endDate }
+    };
+    model.find(query, function (err, data) {
       res.json(data);
     });
   };
